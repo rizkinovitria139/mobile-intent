@@ -3,10 +3,15 @@ package id.ac.polinema.intent;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
+
+    private EditText nameInput;
+    private TextView outputText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,5 +22,14 @@ public class MainActivity extends AppCompatActivity {
     public void handleExplicitIntent(View view) {
         Intent intent = new Intent(this, ExplicitIntentActivity.class);
         startActivity(intent);
+    }
+
+    @Override
+    public <T extends View> T findViewById(int id) {
+        return super.findViewById(id);
+    }
+
+    public void handleExit(View view) {
+        finish();
     }
 }
