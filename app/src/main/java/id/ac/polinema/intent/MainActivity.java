@@ -10,8 +10,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
 
-    private EditText nameInput;
-    private TextView outputText;
+//    private EditText nameInput;
+//    private TextView outputText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,12 +24,12 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    @Override
-    public <T extends View> T findViewById(int id) {
-        return super.findViewById(id);
-    }
-
     public void handleExit(View view) {
         finish();
+    }
+
+    public void handleImplicitIntent(View view) {
+        Intent intent = new Intent(this, ImplicitIntentActivity.class);
+        startActivity(intent);
     }
 }
