@@ -10,8 +10,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
 
-//    private EditText nameInput;
-//    private TextView outputText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
