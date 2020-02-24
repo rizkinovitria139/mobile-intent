@@ -86,6 +86,7 @@
     <Button
         android:id="@+id/button_submit"
         android:text="@string/submit"
+        android:onClick="handleSubmit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         />
