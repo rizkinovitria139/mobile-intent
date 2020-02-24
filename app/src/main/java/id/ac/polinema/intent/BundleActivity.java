@@ -22,9 +22,9 @@ public class BundleActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bundle);
 
-//        EditText usernameInput = (EditText) findViewById(R.id.text_username);
-        EditText nameInput = (EditText) findViewById(R.id.input_name);
-        EditText ageInput = (EditText) findViewById(R.id.input_age);
+        usernameInput = (EditText) findViewById(R.id.input_username);
+        nameInput = (EditText) findViewById(R.id.input_name);
+        ageInput = (EditText) findViewById(R.id.input_age);
     }
 
     public void handleSubmit(View view) {
@@ -32,8 +32,11 @@ public class BundleActivity extends AppCompatActivity {
         String name = nameInput.getText().toString();
         int age = Integer.parseInt(ageInput.getText().toString());
 
-
         Intent intent = new Intent(this, ProfileBundleActivity.class);
+        intent.putExtra(USERNAME_KEY, username);
+        intent.putExtra(NAME_KEY, name);
+        intent.putExtra(AGE_KEY, age);
+
         startActivity(intent);
     }
 }

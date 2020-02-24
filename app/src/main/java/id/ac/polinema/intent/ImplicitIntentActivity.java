@@ -31,69 +31,47 @@ public class ImplicitIntentActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_implicit_intent);
+        avatarImage = findViewById(R.id.image_avatar);
 
         avatarImage = (ImageView) findViewById(R.id.image_avatar);
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(resultCode != RESULT_CANCELED) {
-            switch (requestCode) {
-                case 0:
-                    if (resultCode == RESULT_OK && data != null) {
-                        Bitmap selectedImage = (Bitmap) data.getExtras().get("data");
-                        avatarImage.setImageBitmap(selectedImage);
-                    }
-
-                    break;
-                case 1:
-                    if (resultCode == RESULT_OK && data != null) {
-                        Uri selectedImage =  data.getData();
-                        String[] filePathColumn = {MediaStore.Images.Media.DATA};
-                        if (selectedImage != null) {
-                            Cursor cursor = getContentResolver().query(selectedImage,
-                                    filePathColumn, null, null, null);
-                            if (cursor != null) {
-                                cursor.moveToFirst();
-
-                                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-                                String picturePath = cursor.getString(columnIndex);
-                                avatarImage.setImageBitmap(BitmapFactory.decodeFile(picturePath));
-                                cursor.close();
-                            }
-                        }
-
-                    }
-                    break;
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == RESULT_CANCELED){
+            return;
+        }
+        if(requestCode == GALLERY_REQUEST_CODE) {
+            if (data != null) {
+                try {
+                    Uri imageUri = data.getData();
+                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
+                    avatarImage.setImageBitmap(bitmap);
+                } catch (IOException e) {
+                    Toast.makeText(this, "Can't load image", Toast.LENGTH_SHORT).show();
+                    Log.e(TAG, e.getMessage());
+                }
             }
         }
     }
 
-    public void handlerChangeAvatar(View view) {
-        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        startActivityForResult(intent, GALLERY_REQUEST_CODE);
-    }
-
-    private void selectImage(Context context) {
-        final CharSequence[] options = { "Take Photo", "Choose from Gallery","Cancel" };
+    private void selectImage(Context context){
+        final  CharSequence[] options = {"Take Photo", "Choose from Galery", "Cancel"};
 
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle("Choose your profile picture");
 
         builder.setItems(options, new DialogInterface.OnClickListener() {
-
             @Override
             public void onClick(DialogInterface dialog, int item) {
-
-                if (options[item].equals("Take Photo")) {
-                    Intent takePicture = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                if(options[item].equals("Take Photo")){
+                    Intent takePicture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                     startActivityForResult(takePicture, 0);
-
-                } else if (options[item].equals("Choose from Gallery")) {
-                    Intent pickPhoto = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                    startActivityForResult(pickPhoto , 1);
-
-                } else if (options[item].equals("Cancel")) {
+                }else if(options[item].equals("Choose from Gallery")){
+                    Intent pickPhoto = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    startActivityForResult(pickPhoto, 1);
+                }else if(options[item].equals("Cancel")){
                     dialog.dismiss();
                 }
             }
@@ -101,4 +79,9 @@ public class ImplicitIntentActivity extends AppCompatActivity {
         builder.show();
     }
 
+
+    public void handlerChangeAvatar(View view) {
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(intent, GALLERY_REQUEST_CODE);
+    }
 }

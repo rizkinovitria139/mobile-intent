@@ -29,6 +29,7 @@
         />
 
     <Button
+        android:id="@+id/buutonChange"
         android:text="@string/change_avatar"
         android:onClick="handlerChangeAvatar"
         android:layout_width="match_parent"

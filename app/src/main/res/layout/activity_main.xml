@@ -28,6 +28,7 @@
         <Button
             android:id="@+id/button_bundle"
             android:text="@string/android_bundle"
+            android:onClick="handleBundle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             />
